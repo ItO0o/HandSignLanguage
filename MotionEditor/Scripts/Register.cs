@@ -17,6 +17,8 @@ public class Register : MonoBehaviour
 
     [SerializeField]
     GameObject wordInput;
+    [SerializeField]
+    GameObject loadingCanvas;
 
     // Start is called before the first frame update
     void Start()
@@ -90,8 +92,8 @@ public class Register : MonoBehaviour
         if (wordInput.GetComponent<InputField>().text.Equals("")) {
             manager.GetComponent<ValueUI>().NoneInputWordError();
         } else {
-            Debug.Log(wordInput.GetComponent<InputField>().text);
-            //StartCoroutine(manager.GetComponent<MysqlClient>().SetPoses(manager.GetComponent<LocalMotion>().motion, wordInput.GetComponent<InputField>().text));
+            loadingCanvas.SetActive(true);
+            StartCoroutine(manager.GetComponent<MysqlClient>().SetPoses(manager.GetComponent<LocalMotion>().motion, wordInput.GetComponent<InputField>().text));
         }
     }
 

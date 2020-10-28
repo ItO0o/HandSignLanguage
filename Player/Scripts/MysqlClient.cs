@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MysqlClient : MonoBehaviour {
     //string serverAddress = "http://172.16.5.193/handsignlanguage_mysql_server.php";
     //string serverAddress = "http://set1.ie.aitech.ac.jp:18888/handsignlanguage_mysql_server.php";
     //string serverAddress = "http://172.16.0.73:80/handsignlanguage_mysql_server.php";
     public static string serverAddress = "http://sawanolab.aitech.ac.jp/HandSignLanguage_Mysql_Server/handsignlanguage_mysql_server.php";
-
-    [SerializeField]
+    public static int id;
+    public static string motionName;
 
     public void Start() {
         
@@ -134,12 +135,20 @@ public class MysqlClient : MonoBehaviour {
             }
             if (post.ContainsKey("set_pose")) {
                 Debug.Log("regist:" + www.text);
+                SetStatic(www.text);
+                SceneManager.LoadScene("Confirmation");
             }
             if (post.ContainsKey("get_pose_count")) {
                 Debug.Log(www.text);
                 poseCount = int.Parse(www.text);
             }
         }
+    }
+
+
+    private void SetStatic(string str) {
+       MysqlClient.id = int.Parse(str.Split('(')[2].Split(',')[0]);
+       MysqlClient.motionName = str.Split('(')[2].Split(',')[1].Split('\'')[1];
     }
 
     private IEnumerator CheckTimeOut(WWW www, float timeout) {
