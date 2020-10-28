@@ -80,11 +80,29 @@ public class ValueUI : MonoBehaviour
     {
         if (currentFlow != EditorFlow.FlowElm.Confirm)
         {
-            explanationText.text = "ポーズ:" + manager.GetComponent<EditorFlow>().editorSequences.Count + " 部位:" + manager.GetComponent<EditorFlow>().editorSequences[manager.GetComponent<EditorFlow>().editorSequences.Count - 1].ToString();
+            explanationText.text = "ポーズ:" + manager.GetComponent<EditorFlow>().editorSequences.Count + " 設定箇所:";
+            if (manager.GetComponent<EditorFlow>().editorSequences[manager.GetComponent<EditorFlow>().editorSequences.Count - 1] == EditorFlow.FlowElm.LeftArm) {
+                explanationText.text += "左手の位置"; 
+            }
+            if (manager.GetComponent<EditorFlow>().editorSequences[manager.GetComponent<EditorFlow>().editorSequences.Count - 1] == EditorFlow.FlowElm.LeftHand) {
+                explanationText.text += "左手の向き";
+            }
+            if (manager.GetComponent<EditorFlow>().editorSequences[manager.GetComponent<EditorFlow>().editorSequences.Count - 1] == EditorFlow.FlowElm.LeftFinger) {
+                explanationText.text += "左手の指の形";
+            }
+            if (manager.GetComponent<EditorFlow>().editorSequences[manager.GetComponent<EditorFlow>().editorSequences.Count - 1] == EditorFlow.FlowElm.RightArm) {
+                explanationText.text += "右手の位置";
+            }
+            if (manager.GetComponent<EditorFlow>().editorSequences[manager.GetComponent<EditorFlow>().editorSequences.Count - 1] == EditorFlow.FlowElm.RightHand) {
+                explanationText.text += "右手の向き";
+            }
+            if (manager.GetComponent<EditorFlow>().editorSequences[manager.GetComponent<EditorFlow>().editorSequences.Count - 1] == EditorFlow.FlowElm.RightFinger) {
+                explanationText.text += "右手の指の形";
+            }
         }
         else if (manager.GetComponent<EditorFlow>().editorSequences.Count > 1 && manager.GetComponent<EditorFlow>().editorSequences.Count < 6)
         {
-            explanationText.text = "この動きでいいですか？";
+            explanationText.text = "この動きでいいですか？\n";
         }else if(manager.GetComponent<EditorFlow>().editorSequences.Count >= 6) {
             explanationText.text = "登録できるキーフレームは6つまでです。この動きでいいですか？";
         }
@@ -102,7 +120,7 @@ public class ValueUI : MonoBehaviour
         }
         if (currentFlow == EditorFlow.FlowElm.LeftFinger || currentFlow == EditorFlow.FlowElm.RightFinger)
         {
-            explanationText.text += "\nキーボードの指に割り当てられたキーで指の曲げ伸ばしを設定してください";
+            explanationText.text += "\nキーボードの指に割り当てられたキーで指の曲げ伸ばしし、よければキーボード操作と同時にマウスで次へをクリックしてください";
         }
     }
 
