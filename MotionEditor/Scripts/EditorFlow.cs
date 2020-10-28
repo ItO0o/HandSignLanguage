@@ -31,6 +31,8 @@ public class EditorFlow : MonoBehaviour
     [SerializeField]
     GameObject poseObj,actor;
 
+    [SerializeField]
+    GameObject txtInputField, saveButton;
     // Start is called before the first frame update
     void Start()
     {
@@ -90,7 +92,18 @@ public class EditorFlow : MonoBehaviour
             //manager.GetComponent<AnimationManager>().currentElm = AnimationManager.ModeElm.Loop;
             manager.GetComponent<LocalMotion>().PlayMotion();
         }
-        confirmButton.SetActive(true);
+        if (editorSequences.Count < 2) {
+            txtInputField.SetActive(false);
+            saveButton.SetActive(false);
+        }else {
+            txtInputField.SetActive(true);
+            saveButton.SetActive(true);
+        }
+        if (editorSequences.Count >= 6) {
+
+        } else {
+            confirmButton.SetActive(true);
+        }
         nextButton.SetActive(false);
         manager.GetComponent<LocalMotion>().AddKeyFlame();
     }
@@ -100,6 +113,8 @@ public class EditorFlow : MonoBehaviour
         manager.GetComponent<InputUIManager>().RemoveKeyFlame();
         confirmButton.SetActive(false);
         nextButton.SetActive(true);
+        txtInputField.SetActive(false);
+        saveButton.SetActive(false);
         flowSeq = 0;
         editorSequences[editorSequences.Count - 1] = defFlow[0];
         ChangeTarget(editorSequences[editorSequences.Count - 1]);
@@ -113,6 +128,8 @@ public class EditorFlow : MonoBehaviour
         editorSequences.Add(defFlow[flowSeq]);
         ChangeTarget(editorSequences[editorSequences.Count - 1]);
         confirmButton.SetActive(false);
+        txtInputField.SetActive(false);
+        saveButton.SetActive(false);
         nextButton.SetActive(true);
         poseObj.SetActive(true);
         actor.SetActive(false);

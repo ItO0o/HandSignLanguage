@@ -20,6 +20,9 @@ public class ValueUI : MonoBehaviour
     [SerializeField]
     GameObject rightHandImage, leftHandImage;
 
+    [SerializeField]
+    Text errorText;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -79,9 +82,11 @@ public class ValueUI : MonoBehaviour
         {
             explanationText.text = "ポーズ:" + manager.GetComponent<EditorFlow>().editorSequences.Count + " 部位:" + manager.GetComponent<EditorFlow>().editorSequences[manager.GetComponent<EditorFlow>().editorSequences.Count - 1].ToString();
         }
-        else if (manager.GetComponent<EditorFlow>().editorSequences.Count > 1)
+        else if (manager.GetComponent<EditorFlow>().editorSequences.Count > 1 && manager.GetComponent<EditorFlow>().editorSequences.Count < 6)
         {
             explanationText.text = "この動きでいいですか？";
+        }else if(manager.GetComponent<EditorFlow>().editorSequences.Count >= 6) {
+            explanationText.text = "登録できるキーフレームは6つまでです。この動きでいいですか？";
         }
         else
         {
@@ -143,5 +148,21 @@ public class ValueUI : MonoBehaviour
                 fingerKeys[i].GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
             }
         }
+    }
+
+    public void NoneInputWordError() {
+        errorText.text = "単語名を入力してください";
+        Invoke("DeleteErrorTxt",5f);
+    }
+    public void DeleteErrorTxt() {
+        errorText.text = "\n";
+        //string temp = "";
+        //for (int i = 1;i < errorText.text.Length - 1; i++) {
+        //    temp += errorText.text[i];
+        //}
+        //errorText.text = temp;
+        //if(temp.Length > 0) {
+        //    Invoke("DeleteErrorTxt", 0.5f);
+        //}
     }
 }

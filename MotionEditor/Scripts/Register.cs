@@ -87,21 +87,12 @@ public class Register : MonoBehaviour
 
     public void ResistHandSingLang()
     {
-        StartCoroutine(manager.GetComponent<MysqlClient>().SetPoses(manager.GetComponent<LocalMotion>().motion,wordInput.GetComponent<InputField>().text));
-        //motionBuffer = manager.GetComponent<LocalMotion>().motion;
-        //HumanPose temp = new HumanPose();
-        //temp.muscles = new float[95];
-        //for (int i = 0; i < motionBuffer.currentMotion.Poses.Count; i++)
-        //{
-        //StartCoroutine(RecordPose(i));
-        //}
-        //for (int i = 0; i < HumanTrait.MuscleCount; i++) {
-        //    Debug.Log(motionBuffer.currentMotion.Poses[0].muscleValue[i]);
-        //    temp.muscles[i] = motionBuffer.currentMotion.Poses[0].muscleValue[i];
-        //}
-        //StartCoroutine(manager.GetComponent<MysqlClient>().SetPose(temp));
-        //StartCoroutine("RecordPhrase");
-        //StartCoroutine("RecordMotion");
+        if (wordInput.GetComponent<InputField>().text.Equals("")) {
+            manager.GetComponent<ValueUI>().NoneInputWordError();
+        } else {
+            Debug.Log(wordInput.GetComponent<InputField>().text);
+            //StartCoroutine(manager.GetComponent<MysqlClient>().SetPoses(manager.GetComponent<LocalMotion>().motion, wordInput.GetComponent<InputField>().text));
+        }
     }
 
     public IEnumerator RecordPose(int index)
