@@ -186,8 +186,8 @@ public class InputUIManager : MonoBehaviour
     {
         actor.GetComponent<IKDummy>().GetPose();
 
-        actor.GetComponent<IKDummy>().SetHandValue(55, slider[0].value);
-        actor.GetComponent<IKDummy>().SetHandValue(56, slider[0].value);
+        actor.GetComponent<IKDummy>().SetHandValue(56, -slider[0].value);
+        actor.GetComponent<IKDummy>().SetHandValue(57, slider[0].value);
         actor.GetComponent<IKDummy>().SetHandValue(58, slider[0].value);
 
         actor.GetComponent<IKDummy>().SetHandValue(60, -slider[1].value * 2);
@@ -242,6 +242,8 @@ public class InputUIManager : MonoBehaviour
 
     public void FixFingerJoint(List<GameObject> objs)
     {
+        objs[0].transform.Rotate(45, 0, 0);
+        //objs[5].transform.Rotate(-90, 90, 0);
         for (int i = 1; i < 5; i++)
         {
             objs[i].transform.Rotate(-90, 0, 0);
