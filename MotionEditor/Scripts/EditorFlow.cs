@@ -59,7 +59,7 @@ public class EditorFlow : MonoBehaviour
         preFlow = editorSequences[editorSequences.Count - 1];
     }
 
-    void InitTargetUI()
+    public void InitTargetUI()
     {
         List<GameObject> target = manager.GetComponent<IKManager>().target;
         for (int i = 0; i < target.Count; i++)
@@ -79,7 +79,10 @@ public class EditorFlow : MonoBehaviour
         flowSeq++;
         if (defFlow[flowSeq] != FlowElm.Confirm) {
             editorSequences[editorSequences.Count - 1] = defFlow[flowSeq];
-            ChangeTarget(editorSequences[editorSequences.Count - 1]);
+            if (manager.GetComponent<EditorFlow>().easyEditor == false)
+            {
+                ChangeTarget(editorSequences[editorSequences.Count - 1]);
+            }
         }
         else
         {
@@ -119,7 +122,11 @@ public class EditorFlow : MonoBehaviour
         saveButton.SetActive(false);
         flowSeq = 0;
         editorSequences[editorSequences.Count - 1] = defFlow[0];
-        ChangeTarget(editorSequences[editorSequences.Count - 1]);
+        if (manager.GetComponent<EditorFlow>().easyEditor == false)
+        {
+            ChangeTarget(editorSequences[editorSequences.Count - 1]);
+        }
+        manager.GetComponent<InputUIManager>().currentMode = InputUIManager.ModeElm.Hand;
         poseObj.SetActive(true);
         actor.SetActive(false);
     }
@@ -128,7 +135,11 @@ public class EditorFlow : MonoBehaviour
     {
         flowSeq = 0;
         editorSequences.Add(defFlow[flowSeq]);
-        ChangeTarget(editorSequences[editorSequences.Count - 1]);
+        if (manager.GetComponent<EditorFlow>().easyEditor == false)
+        {
+             ChangeTarget(editorSequences[editorSequences.Count - 1]);
+        }
+        manager.GetComponent<InputUIManager>().currentMode = InputUIManager.ModeElm.Hand;
         confirmButton.SetActive(false);
         txtInputField.SetActive(false);
         saveButton.SetActive(false);
@@ -140,11 +151,10 @@ public class EditorFlow : MonoBehaviour
         currentPoseIndex++;
     }
 
-    void ChangeTarget(FlowElm elm)
+    public void ChangeTarget(FlowElm elm)
     {
         InitTargetUI();
         List<GameObject> target = manager.GetComponent<InputUIManager>().targets;
-        manager.GetComponent<InputUIManager>().currentMode = InputUIManager.ModeElm.Hand;
         if (elm == FlowElm.LeftArm)
         {
             target[0].GetComponent<SphereCollider>().enabled = true;

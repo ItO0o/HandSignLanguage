@@ -35,6 +35,7 @@ public class InputUIManager : MonoBehaviour
     GameObject manager;
     [SerializeField]
     GameObject inputCanves;
+
     enum StageElm
     {
         HandPosition,
@@ -87,6 +88,7 @@ public class InputUIManager : MonoBehaviour
                     InitTargetPointerCollor();
                     target = hit.collider.gameObject;
                     TargetPointerCollor(target);
+                    follow = !follow;
                 }
                 else if (hit.collider.gameObject.CompareTag("Hand_Pointer"))
                 {
@@ -104,10 +106,10 @@ public class InputUIManager : MonoBehaviour
             FollowMouse(0);
         }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            follow = !follow;
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    follow = !follow;
+        //}
 
         if (preFollow == true && follow == false)
         {
@@ -184,15 +186,15 @@ public class InputUIManager : MonoBehaviour
     {
         actor.GetComponent<IKDummy>().GetPose();
 
-        actor.GetComponent<IKDummy>().SetHandValue(56, -slider[0].value);
+        actor.GetComponent<IKDummy>().SetHandValue(56, slider[0].value);
         actor.GetComponent<IKDummy>().SetHandValue(57, slider[0].value);
         actor.GetComponent<IKDummy>().SetHandValue(58, slider[0].value);
 
-        actor.GetComponent<IKDummy>().SetHandValue(60, -slider[1].value * 2);
+        actor.GetComponent<IKDummy>().SetHandValue(60, -slider[1].value);
         actor.GetComponent<IKDummy>().SetHandValue(61, slider[1].value);
         actor.GetComponent<IKDummy>().SetHandValue(62, slider[1].value);
 
-        actor.GetComponent<IKDummy>().SetHandValue(64, -slider[2].value * 4);
+        actor.GetComponent<IKDummy>().SetHandValue(64, -slider[2].value);
         actor.GetComponent<IKDummy>().SetHandValue(65, slider[2].value);
         actor.GetComponent<IKDummy>().SetHandValue(66, slider[2].value);
 
@@ -204,15 +206,15 @@ public class InputUIManager : MonoBehaviour
         actor.GetComponent<IKDummy>().SetHandValue(73, slider[4].value);
         actor.GetComponent<IKDummy>().SetHandValue(74, slider[4].value);
 
-        actor.GetComponent<IKDummy>().SetHandValue(76, -slider[5].value);
+        actor.GetComponent<IKDummy>().SetHandValue(76, slider[5].value);
         actor.GetComponent<IKDummy>().SetHandValue(77, slider[5].value);
         actor.GetComponent<IKDummy>().SetHandValue(78, slider[5].value);
 
-        actor.GetComponent<IKDummy>().SetHandValue(80, -slider[6].value * 2);
+        actor.GetComponent<IKDummy>().SetHandValue(80, -slider[6].value);
         actor.GetComponent<IKDummy>().SetHandValue(81, slider[6].value);
         actor.GetComponent<IKDummy>().SetHandValue(82, slider[6].value);
 
-        actor.GetComponent<IKDummy>().SetHandValue(84, -slider[7].value * 4);
+        actor.GetComponent<IKDummy>().SetHandValue(84, -slider[7].value);
         actor.GetComponent<IKDummy>().SetHandValue(85, slider[7].value);
         actor.GetComponent<IKDummy>().SetHandValue(86, slider[7].value);
 
@@ -240,7 +242,7 @@ public class InputUIManager : MonoBehaviour
 
     public void FixFingerJoint(List<GameObject> objs)
     {
-        objs[0].transform.Rotate(45, 0, 0);
+        //objs[0].transform.Rotate(45, 0, 0);
         //objs[5].transform.Rotate(-90, 90, 0);
         for (int i = 1; i < 5; i++)
         {
