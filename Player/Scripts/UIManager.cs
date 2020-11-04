@@ -85,7 +85,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         //フレーズリストが増えたら増えた分ドロップダウンに追加
-        if (tempPhraseCnt < phrases.Count)
+        if (tempPhraseCnt < phrases.Count && null != phrasesDropdown)
         {
             int newCnt = phrases.Count - tempPhraseCnt;
 
