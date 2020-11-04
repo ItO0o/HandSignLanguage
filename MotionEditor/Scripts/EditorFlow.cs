@@ -17,6 +17,8 @@ public class EditorFlow : MonoBehaviour
         Confirm
     }
 
+    public bool easyEditor;
+
     public List<FlowElm> editorSequences;
     public int flowSeq = 0;
 

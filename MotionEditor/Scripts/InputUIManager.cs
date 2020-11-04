@@ -74,7 +74,7 @@ public class InputUIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && manager.GetComponent<EditorFlow>().easyEditor == false)
         {
             Ray ray = new Ray();
             RaycastHit hit = new RaycastHit();
@@ -99,7 +99,7 @@ public class InputUIManager : MonoBehaviour
             }
         }
 
-        if (follow && target != null && currentMode == ModeElm.Hand)
+        if (follow && target != null && currentMode == ModeElm.Hand && manager.GetComponent<EditorFlow>().easyEditor == false)
         {
             FollowMouse(0);
         }
@@ -116,8 +116,6 @@ public class InputUIManager : MonoBehaviour
 
         if (currentMode == ModeElm.Finger)
         {
-            //fingerCnt += Time.deltaTime;
-            //PrintFingerCount();
             if (manager.GetComponent<EditorFlow>().editorSequences[manager.GetComponent<EditorFlow>().editorSequences.Count - 1] == EditorFlow.FlowElm.LeftFinger)
             {
                 LeftFingerInput();

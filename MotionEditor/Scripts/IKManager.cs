@@ -56,12 +56,41 @@ public class IKManager : MonoBehaviour
         //    animator.SetIKRotation(AvatarIKGoal.LeftHand, target[0].transform.rotation);
         //}
         //SetIK();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = new Ray();
+            RaycastHit hit = new RaycastHit();
+            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray.origin, ray.direction, out hit, Mathf.Infinity))
+            {
+                if (hit.collider.gameObject.CompareTag("Hand_Pointer"))
+                {
+                    int currentSeq = manager.GetComponent<EditorFlow>().flowSeq;
+                    EditorFlow.FlowElm current = manager.GetComponent<EditorFlow>().editorSequences[currentSeq];
+                    if (current == EditorFlow.FlowElm.RightArm)
+                    {
+                        target[2] = hit.collider.gameObject;
+                        target[3] = hit.collider.gameObject.transform.GetChild(0).gameObject;
+                    }
+                }
+                else
+                {
+
+                }
+            }
+        }
+
         if (manager.GetComponent<InputUIManager>().currentMode != InputUIManager.ModeElm.Play)
         {
 
             if (manager.GetComponent<HumanPoseCheck>().right || manager.GetComponent<HumanPoseCheck>().left) {
-                rightHandBone.transform.LookAt(rightTipTarget.transform.position);
-                rightHandBone.transform.Rotate(rightHandBone.transform.up, -90);
+                //rightHandBone.transform.LookAt(rightTipTarget.transform.position);
+                //rightHandBone.transform.Rotate(rightHandBone.transform.up, -90);
+                //手のひらが下
+                //rightHandBone.transform.rotation = new Quaternion(0, 90, 0, 0);
+
                 leftHandBone.transform.LookAt(leftTipTarget.transform.position);
                 leftHandBone.transform.Rotate(leftHandBone.transform.up, 90);
 
@@ -94,7 +123,7 @@ public class IKManager : MonoBehaviour
         //handler.GetHumanPose(ref pose);
         //manager.GetComponent<HumanPoseCheck>().Check(ref pose);
 
-
+        //左て追従
         animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0.5f);
         animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0.5f);
         animator.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 0.5f);
@@ -102,15 +131,13 @@ public class IKManager : MonoBehaviour
         animator.SetIKPosition(AvatarIKGoal.LeftHand, target[0].transform.position);
         animator.SetIKRotation(AvatarIKGoal.LeftHand, target[0].transform.rotation);
 
+        //右手追従
         animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0.5f);
         animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0.5f);
         animator.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 0.5f);
         animator.SetIKHintPosition(AvatarIKHint.RightElbow, target[3].transform.position);
         animator.SetIKPosition(AvatarIKGoal.RightHand, target[2].transform.position);
         animator.SetIKRotation(AvatarIKGoal.RightHand, target[2].transform.rotation);
-
-        //animator.SetLookAtWeight(1.0f, 1f, 1.0f, 0.0f, 1f);
-        //animator.SetLookAtPosition(new Vector3(midPoint.transform.position.x,head.transform.position.y , midPoint.transform.position.z));
     }
 
 }
