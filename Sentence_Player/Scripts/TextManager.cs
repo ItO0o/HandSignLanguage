@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
+
 public class TextManager : MonoBehaviour
 {
     [SerializeField]
@@ -13,7 +15,13 @@ public class TextManager : MonoBehaviour
     [SerializeField]
     public GameObject playButton;
     List<string> phrases = new List<string>();
-
+    [SerializeField]
+    public GameObject loadingCanvas;
+    [SerializeField]
+    public GameObject searchButton;
+    public List<string> valueResult;
+    [SerializeField]
+    public Text result;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,8 +42,22 @@ public class TextManager : MonoBehaviour
 
     public void StartSearch()
     {
+        ClearMotion();
+        loadingCanvas.SetActive(true);
+        searchButton.GetComponent<Button>().interactable = false;
         motion.currentMotion.Poses = new List<MotionData.Pose>();
-        string temp = textInputField.text.Replace(' ',',');
+        string temp = textInputField.text;
+        temp = Regex.Replace(temp, @"\s+", " ");
+        temp = temp.TrimEnd().TrimStart().Replace(' ', ',');
+        valueResult = new List<string>();
+        for (int i = 0; i < temp.Split(',').Length; i++) {
+            valueResult.Add(temp.Split(',')[i]);
+        }
+        if (valueResult.Count == 0 || textInputField.text.TrimEnd().Length == 0) {
+            loadingCanvas.SetActive(false);
+            searchButton.GetComponent<Button>().interactable = true;
+            return;
+        }
         StartCoroutine(manager.GetComponent<MysqlClient>().SearchPhrase(temp));
     }
 

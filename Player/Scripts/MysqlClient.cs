@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MysqlClient : MonoBehaviour
 {
     //string serverAddress = "http://172.16.5.193/handsignlanguage_mysql_server.php";
     //string serverAddress = "http://set1.ie.aitech.ac.jp:18888/handsignlanguage_mysql_server.php";
-    //string serverAddress = "http://172.16.0.73:80/handsignlanguage_mysql_server.php";
-    public static string serverAddress = "http://sawanolab.aitech.ac.jp/HandSignLanguage_Mysql_Server/handsignlanguage_mysql_server.php";
+    public static string serverAddress = "http://172.16.0.115:80/handsignlanguage_mysql_server.php";
+    //public static string serverAddress = "http://sawanolab.aitech.ac.jp/HandSignLanguage_Mysql_Server/handsignlanguage_mysql_server.php";
     public static int id;
     public static string motionName;
     public bool inRequestAnimation;
@@ -37,10 +38,11 @@ public class MysqlClient : MonoBehaviour
         inRequestAnimation = true;
         Dictionary<string, string> dic = new Dictionary<string, string>();
         //複数phpに送信したいデータがある場合は今回の場合dic.Add("hoge", value)のように足していけばよい
-        Debug.Log(text);
         dic.Add("phrase_search", text);
-        StartCoroutine(Post(serverAddress, dic));  // POST
-        yield return 0;
+        yield return StartCoroutine(Post(serverAddress, dic));  // POST
+        this.GetComponent<TextManager>().loadingCanvas.SetActive(false);
+        this.GetComponent<TextManager>().searchButton.GetComponent<Button>().interactable = true;
+        //yield return 0;
     }
 
     public IEnumerator GetPhraseList()
@@ -58,8 +60,13 @@ public class MysqlClient : MonoBehaviour
         Dictionary<string, string> dic = new Dictionary<string, string>();
         motionsID = new List<int>();
         dic.Add("motion", id.ToString());
-        StartCoroutine(Post(serverAddress, dic));  // POST
+        yield return StartCoroutine(Post(serverAddress, dic));  // POST
         yield return 0;
+    }
+
+    private void ByeLoading() {
+        this.GetComponent<TextManager>().loadingCanvas.SetActive(false);
+        this.GetComponent<TextManager>().searchButton.GetComponent<Button>().interactable = true;
     }
 
     private IEnumerator GetPose(int id)
@@ -68,7 +75,7 @@ public class MysqlClient : MonoBehaviour
         //dic.Add("id", InputText_.GetComponent<Text>().text);  //インプットフィールドからidの取得);
         //複数phpに送信したいデータがある場合は今回の場合dic.Add("hoge", value)のように足していけばよい
         dic.Add("pose", id.ToString());
-        StartCoroutine(Post(serverAddress, dic));  // POST
+        yield return StartCoroutine(Post(serverAddress, dic));  // POST
 
         yield return 0;
     }
@@ -149,7 +156,7 @@ public class MysqlClient : MonoBehaviour
                 List<string> tempList = new List<string>();
                 for (int i = 2; i < tempArray.Length; i++)
                 {
-                    Debug.Log(tempArray[i]);
+                    //Debug.Log(tempArray[i]);
                     try
                     {
                         muscles.Add(float.Parse(tempArray[i]));
@@ -170,12 +177,9 @@ public class MysqlClient : MonoBehaviour
                 string[] tempArray = www.text.Split(',');
                 for (int i = 0; i < tempArray.Length; i++)
                 {
-                    try
-                    {
-                        //motionsID.Add(int.Parse(tempArray[i]));
-                        StartCoroutine(GetPose(int.Parse(tempArray[i])));
+                    if (tempArray[i].Length > 0) {
+                        yield return StartCoroutine("GetPose",int.Parse(tempArray[i]));
                     }
-                    catch { }
                 }
             }
             if (post.ContainsKey("set_pose"))
@@ -192,18 +196,23 @@ public class MysqlClient : MonoBehaviour
             if (post.ContainsKey("phrase_search"))
             {
                 Debug.Log(www.text);
-                //string[] temp = www.text.Split(',');
-                string[] temp = {"4","6"};
-                for (int i = 0; i < temp.Length; i++)
-                {
+                string[] temp = www.text.Split(',');
+                //string[] temp = {"4","6"};
+                string value = "";
+                for (int i = 0; i < temp.Length; i++) {
                     int id = int.Parse(temp[i]);
-                    if (id != -1)
-                    {
-                        StartCoroutine(GetAnimation(id));
+                    string currentTxt = this.GetComponent<TextManager>().valueResult[i];
+                    if (id != -1) {
+                        value += "<color=#00ff00>" + currentTxt + " </color>";
+                        yield return StartCoroutine("GetAnimation", id);
+                    } else {
+                        value += "<color=#ff0000>" + currentTxt + " </color>";
                     }
                 }
+                this.GetComponent<TextManager>().result.text = value;
             }
         }
+        yield return 0;
     }
 
 

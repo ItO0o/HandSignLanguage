@@ -27,6 +27,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     AnimationManager anime;
+    [SerializeField]
+    GameObject loadingObj;
 
     private enum Models
     {
@@ -101,6 +103,7 @@ public class UIManager : MonoBehaviour
         if (poseRequest && manager.GetComponent<MotionData>().currentMotion.Poses.Count > 0)
         {
             SetPoseDropdown();
+            loadingObj.SetActive(false);
             poseRequest = false;
         }
 
