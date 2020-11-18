@@ -8,13 +8,14 @@ public class MysqlClient : MonoBehaviour
 {
     //string serverAddress = "http://172.16.5.193/handsignlanguage_mysql_server.php";
     //string serverAddress = "http://set1.ie.aitech.ac.jp:18888/handsignlanguage_mysql_server.php";
-    //public static string serverAddress = "http://172.16.0.115:80/handsignlanguage_mysql_server.php";
-    public static string serverAddress = "http://sawanolab.aitech.ac.jp/HandSignLanguage_Mysql_Server/handsignlanguage_mysql_server.php";
+    public static string serverAddress = "http://192.168.1.16:80/handsignlanguage_mysql_server.php";
+    //public static string serverAddress = "http://sawanolab.aitech.ac.jp/HandSignLanguage_Mysql_Server/handsignlanguage_mysql_server.php";
     public static int id;
     public static string motionName;
     public bool inRequestAnimation;
     [SerializeField]
-    GameObject startButton;
+    GameObject startButton, confirmButton;
+
     public void Start()
     {
 
@@ -26,11 +27,23 @@ public class MysqlClient : MonoBehaviour
     MotionData motion;
 
     List<int> motionsID = new List<int>();
+
+    [SerializeField]
+    GameObject dropdown,dropdwonsParent,lastDropdown;
+    public List<GameObject> dropdowns;
+
     public int poseCount = 0;
 
     public void DummyStartCoroutine(string method, int id)
     {
         StartCoroutine(method, id);
+    }
+
+    public IEnumerator SearchText(string text) {
+        Dictionary<string, string> dic = new Dictionary<string, string>();
+        //複数phpに送信したいデータがある場合は今回の場合dic.Add("hoge", value)のように足していけばよい
+        dic.Add("text_search", text);
+        yield return StartCoroutine(Post(serverAddress, dic));  // POST
     }
 
     public IEnumerator SearchPhrase(string text)
@@ -201,15 +214,50 @@ public class MysqlClient : MonoBehaviour
                 string value = "";
                 for (int i = 0; i < temp.Length; i++) {
                     int id = int.Parse(temp[i]);
-                    string currentTxt = this.GetComponent<TextManager>().valueResult[i];
-                    if (id != -1) {
-                        value += "<color=#00ff00>" + currentTxt + " </color>";
-                        yield return StartCoroutine("GetAnimation", id);
+                    Debug.Log("tytretryj");
+                    yield return StartCoroutine("GetAnimation", id);
+                }
+                for (int i = 0; i < dropdowns.Count; i++) { 
+                    string currentTxt = "";
+                    if (dropdowns[i].GetComponent<Dropdown>().options.Count > 0) {
+                        currentTxt = dropdowns[i].GetComponent<Dropdown>().options[dropdowns[i].GetComponent<Dropdown>().value].text;
                     } else {
-                        value += "<color=#ff0000>" + currentTxt + " </color>";
+                        continue;
                     }
+                    value += "<color=#00ff00>" + currentTxt + "　　　</color>";
                 }
                 this.GetComponent<TextManager>().result.text = value;
+            }
+            if (post.ContainsKey("text_search")) {
+                Debug.Log(www.text);
+                string[] temp = www.text.Split('*');
+                dropdowns = new List<GameObject>();
+                for (int i = 0; i < dropdowns.Count;i++) {
+                    Destroy(dropdowns[i].gameObject);
+                }
+                for (int i = 0; i < temp.Length; i++) {
+                    string[] cand = temp[i].Split('+');
+                    GameObject tempObj;
+                    if (i == temp.Length - 1) {
+                        tempObj = Instantiate<GameObject>(lastDropdown);
+                    } else {
+                        tempObj = Instantiate<GameObject>(dropdown);
+                    }
+                    dropdowns.Add(tempObj);
+                    tempObj.transform.parent = dropdwonsParent.transform;
+                    tempObj.GetComponent<RectTransform>().position = new Vector3(100,680 -　50 * i, 0);
+                    confirmButton.GetComponent<RectTransform>().position = new Vector3(100, 680 - 50 * (i + 1), 0);
+                    for (int j = 0; j < cand.Length; j++) {
+                        string str = cand[j];
+                        if (str.Equals("-1")) {
+                            continue;
+                        } else {
+                            tempObj.GetComponent<Dropdown>().options.Add(new Dropdown.OptionData { text = str });
+                        }
+                    }
+                }
+                this.GetComponent<TextManager>().loadingCanvas.SetActive(false);
+                this.GetComponent<TextManager>().confirmButton.SetActive(true);
             }
         }
         yield return 0;

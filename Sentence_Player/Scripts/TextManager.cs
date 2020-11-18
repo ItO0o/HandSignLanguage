@@ -22,6 +22,8 @@ public class TextManager : MonoBehaviour
     public List<string> valueResult;
     [SerializeField]
     public Text result;
+    [SerializeField]
+    public GameObject confirmButton;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +45,7 @@ public class TextManager : MonoBehaviour
     public void StartSearch()
     {
         ClearMotion();
+        confirmButton.SetActive(false);
         loadingCanvas.SetActive(true);
         searchButton.GetComponent<Button>().interactable = false;
         motion.currentMotion.Poses = new List<MotionData.Pose>();
@@ -58,7 +61,7 @@ public class TextManager : MonoBehaviour
             searchButton.GetComponent<Button>().interactable = true;
             return;
         }
-        StartCoroutine(manager.GetComponent<MysqlClient>().SearchPhrase(temp));
+        StartCoroutine(manager.GetComponent<MysqlClient>().SearchText(temp));
     }
 
     void Cut()
@@ -70,8 +73,21 @@ public class TextManager : MonoBehaviour
         }
     }
 
-    void PrintTexts()
+    public void SearchText()
     {
-
+        ClearMotion();
+        string str = "";
+        for (int i = 0;i < manager.GetComponent<MysqlClient>().dropdowns.Count; i++) {
+            Dropdown temp = manager.GetComponent<MysqlClient>().dropdowns[i].GetComponent<Dropdown>();
+            if (temp.options.Count == 0) {
+                continue;
+            }
+            str += temp.options[temp.value].text;
+            if (i == manager.GetComponent<MysqlClient>().dropdowns.Count - 1) {
+                break;
+            }
+            str += ",";
+        }
+        StartCoroutine(manager.GetComponent<MysqlClient>().SearchPhrase(str));
     }
 }
