@@ -8,8 +8,8 @@ public class MysqlClient : MonoBehaviour
 {
     //string serverAddress = "http://172.16.5.193/handsignlanguage_mysql_server.php";
     //string serverAddress = "http://set1.ie.aitech.ac.jp:18888/handsignlanguage_mysql_server.php";
-    public static string serverAddress = "http://172.16.0.115:80/handsignlanguage_mysql_server.php";
-    //public static string serverAddress = "http://sawanolab.aitech.ac.jp/HandSignLanguage_Mysql_Server/handsignlanguage_mysql_server.php";
+    //public static string serverAddress = "http://172.16.0.115:80/handsignlanguage_mysql_server.php";
+    public static string serverAddress = "http://sawanolab.aitech.ac.jp/HandSignLanguage_Mysql_Server/handsignlanguage_mysql_server.php";
     public static int id;
     public static string motionName;
     public bool inRequestAnimation;

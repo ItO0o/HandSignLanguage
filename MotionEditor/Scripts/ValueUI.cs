@@ -112,15 +112,19 @@ public class ValueUI : MonoBehaviour
         }
         if (currentFlow == EditorFlow.FlowElm.LeftArm || currentFlow == EditorFlow.FlowElm.RightArm)
         {
-            explanationText.text += "\nマウスでボールの位置を設定してください(左クリック:追従切り替え)\n手の位置がボールに追従します";
+            if (manager.GetComponent<EditorFlow>().easyEditor) {
+                explanationText.text += "\n手の位置を赤いボックスから選んでください";
+            } else {
+                explanationText.text += "\nマウスでボールの位置を設定してください(左クリック:追従切り替え)\n手の位置がボールに追従します";
+            }
         }
         if (currentFlow == EditorFlow.FlowElm.LeftHand || currentFlow == EditorFlow.FlowElm.RightHand)
         {
-            explanationText.text += "\nマウスでボールの位置を設定してください(左クリック:追従切り替え)\n手がボールの方向を向きます";
+            explanationText.text += " 手の向きを以下から選んでください";
         }
         if (currentFlow == EditorFlow.FlowElm.LeftFinger || currentFlow == EditorFlow.FlowElm.RightFinger)
         {
-            explanationText.text += "\nキーボードの指に割り当てられたキーで指の曲げ伸ばしし、よければキーボード操作と同時にマウスで次へをクリックしてください";
+            explanationText.text += " 手形を以下から選んでください";
         }
     }
 

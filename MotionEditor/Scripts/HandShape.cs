@@ -58,12 +58,9 @@ public class HandShape : MonoBehaviour
     void LateUpdate()
     {
         if (test) {
-            //rightHand.transform.LookAt(obj.transform.position);
-            leftHand.transform.rotation = new Quaternion(x, y, z, w);
-            //leftHand.transform.rotation = currentLeftHand;
+            leftHand.transform.rotation = currentLeftHand;
             rightHand.transform.rotation = currentRightHand;
         }
-        Debug.Log(leftHand.transform.rotation);
     }
     //内＝体のセンターへ
     //掌をカメラに、指を上に
