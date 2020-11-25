@@ -214,7 +214,6 @@ public class MysqlClient : MonoBehaviour
                 string value = "";
                 for (int i = 0; i < temp.Length; i++) {
                     int id = int.Parse(temp[i]);
-                    Debug.Log("tytretryj");
                     yield return StartCoroutine("GetAnimation", id);
                 }
                 for (int i = 0; i < dropdowns.Count; i++) { 

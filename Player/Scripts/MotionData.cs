@@ -21,9 +21,12 @@ public class MotionData : MonoBehaviour
 
     public Motion currentMotion;
 
+    public List<int> loadedMotionSentenceCnt;
+
     // Start is called before the first frame update
     void Start()
     {
+        loadedMotionSentenceCnt = new List<int>();
         if (network == true)
         {
             mysql.DummyStartCoroutine("GetAnimation", 1);

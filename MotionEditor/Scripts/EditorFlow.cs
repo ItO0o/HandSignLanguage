@@ -34,7 +34,7 @@ public class EditorFlow : MonoBehaviour
     GameObject poseObj,actor;
 
     [SerializeField]
-    GameObject txtInputField, saveButton;
+    GameObject txtInputField, saveButton, confirmUIImg;
     // Start is called before the first frame update
     void Start()
     {
@@ -100,9 +100,11 @@ public class EditorFlow : MonoBehaviour
         if (editorSequences.Count < 2) {
             txtInputField.SetActive(false);
             saveButton.SetActive(false);
+            confirmUIImg.SetActive(false);
         }else {
             txtInputField.SetActive(true);
             saveButton.SetActive(true);
+            confirmUIImg.SetActive(true);
         }
         if (editorSequences.Count >= 6) {
 
@@ -120,6 +122,7 @@ public class EditorFlow : MonoBehaviour
         nextButton.SetActive(true);
         txtInputField.SetActive(false);
         saveButton.SetActive(false);
+        confirmUIImg.SetActive(false);
         flowSeq = 0;
         editorSequences[editorSequences.Count - 1] = defFlow[0];
         if (manager.GetComponent<EditorFlow>().easyEditor == false)
@@ -143,6 +146,7 @@ public class EditorFlow : MonoBehaviour
         confirmButton.SetActive(false);
         txtInputField.SetActive(false);
         saveButton.SetActive(false);
+        confirmUIImg.SetActive(false);
         nextButton.SetActive(true);
         poseObj.SetActive(true);
         actor.SetActive(false);
