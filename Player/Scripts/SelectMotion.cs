@@ -46,6 +46,7 @@ public class SelectMotion : MonoBehaviour
         string temp = label.GetComponent<Text>().text.Split('_')[0];
         yield return StartCoroutine(this.GetComponent<MysqlClient>().GetAnimation(int.Parse(temp)));
         motion.currentMotion.Poses.Insert(0, defaultMotion.Poses[0]);
+        motion.currentMotion.Poses.Add(defaultMotion.Poses[0]);
     }
 
     public void StartMotion()
