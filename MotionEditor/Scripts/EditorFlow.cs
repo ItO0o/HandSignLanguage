@@ -97,15 +97,15 @@ public class EditorFlow : MonoBehaviour
             //manager.GetComponent<AnimationManager>().currentElm = AnimationManager.ModeElm.Loop;
             manager.GetComponent<LocalMotion>().PlayMotion();
         }
-        if (editorSequences.Count < 2) {
-            txtInputField.SetActive(false);
-            saveButton.SetActive(false);
-            confirmUIImg.SetActive(false);
-        }else {
+        //if (editorSequences.Count < 2) {
+        //    txtInputField.SetActive(false);
+        //    saveButton.SetActive(false);
+        //    confirmUIImg.SetActive(false);
+        //}else {
             txtInputField.SetActive(true);
             saveButton.SetActive(true);
             confirmUIImg.SetActive(true);
-        }
+        //}
         if (editorSequences.Count >= 6) {
 
         } else {

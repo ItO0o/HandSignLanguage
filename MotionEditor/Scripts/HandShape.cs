@@ -57,10 +57,12 @@ public class HandShape : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        //currentLeftHand = new Quaternion(x, y, z, w);
         if (test) {
             leftHand.transform.rotation = currentLeftHand;
             rightHand.transform.rotation = currentRightHand;
         }
+        //Debug.Log(leftHand.transform.rotation);
     }
     //内＝体のセンターへ
     //掌をカメラに、指を上に
@@ -86,6 +88,10 @@ public class HandShape : MonoBehaviour
     //掌をカメラ反対に、指を下に
     public void RightHand6() {
         currentRightHand = new Quaternion(-0.4f, 0.6f, 0.6f, -0.4f);
+    }
+    //掌をカメラ反対に、指を上に
+    public void RightHand7() {
+        currentRightHand = new Quaternion(0.4f, 0.4f, 0.7f, 0.5f);
     }
     public void RightFinger1() {
         fingerSliders[0].value = 1;
@@ -186,6 +192,10 @@ public class HandShape : MonoBehaviour
     //掌をカメラ反対に、指を下に
     public void LeftHand6() {
         currentLeftHand = new Quaternion(0.5f, 0.5f, 0.6f, 0.4f);
+    }
+    //掌をカメラ反対に、指を上に
+    public void LeftHand7() {
+        currentRightHand = new Quaternion(0.5f, -0.4f, -0.6f, 0.5f);
     }
 
     public void LeftFinger1() {

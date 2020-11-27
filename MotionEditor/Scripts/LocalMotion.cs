@@ -99,5 +99,6 @@ public class LocalMotion : MonoBehaviour
         localMotion.Poses.Add(pose);
 
         manager.GetComponent<AnimationManager>().motion.currentMotion = localMotion;
+        manager.GetComponent<LocalMotion>().motion.currentMotion = localMotion;
     }
 }

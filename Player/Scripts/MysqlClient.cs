@@ -8,7 +8,7 @@ public class MysqlClient : MonoBehaviour
 {
     //string serverAddress = "http://172.16.5.193/handsignlanguage_mysql_server.php";
     //string serverAddress = "http://set1.ie.aitech.ac.jp:18888/handsignlanguage_mysql_server.php";
-    public static string serverAddress = "http://192.168.1.16:80/handsignlanguage_mysql_server.php";
+    public static string serverAddress = "http://10.4.141.113:80/handsignlanguage_mysql_server.php";
     //public static string serverAddress = "http://sawanolab.aitech.ac.jp/HandSignLanguage_Mysql_Server/handsignlanguage_mysql_server.php";
     public static int id;
     public static string motionName;
@@ -53,8 +53,10 @@ public class MysqlClient : MonoBehaviour
         //複数phpに送信したいデータがある場合は今回の場合dic.Add("hoge", value)のように足していけばよい
         dic.Add("phrase_search", text);
         yield return StartCoroutine(Post(serverAddress, dic));  // POST
-        this.GetComponent<TextManager>().loadingCanvas.SetActive(false);
-        this.GetComponent<TextManager>().searchButton.GetComponent<Button>().interactable = true;
+        try {
+            this.GetComponent<TextManager>().loadingCanvas.SetActive(false);
+            this.GetComponent<TextManager>().searchButton.GetComponent<Button>().interactable = true;
+        } catch { }
         //yield return 0;
     }
 
@@ -68,7 +70,7 @@ public class MysqlClient : MonoBehaviour
         yield return 0;
     }
 
-    private IEnumerator GetAnimation(int id)
+    public IEnumerator GetAnimation(int id)
     {
         Dictionary<string, string> dic = new Dictionary<string, string>();
         motionsID = new List<int>();
@@ -188,12 +190,15 @@ public class MysqlClient : MonoBehaviour
             if (post.ContainsKey("motion"))
             {
                 string[] tempArray = www.text.Split(',');
+                int cnt = 0;
                 for (int i = 0; i < tempArray.Length; i++)
                 {
                     if (tempArray[i].Length > 0) {
+                        cnt++;
                         yield return StartCoroutine("GetPose",int.Parse(tempArray[i]));
                     }
                 }
+                this.GetComponent<MotionData>().loadedMotionSentenceCnt.Add(cnt);
             }
             if (post.ContainsKey("set_pose"))
             {
@@ -216,16 +221,20 @@ public class MysqlClient : MonoBehaviour
                     int id = int.Parse(temp[i]);
                     yield return StartCoroutine("GetAnimation", id);
                 }
+                List<string> currentTxt = new List<string>();
                 for (int i = 0; i < dropdowns.Count; i++) { 
-                    string currentTxt = "";
                     if (dropdowns[i].GetComponent<Dropdown>().options.Count > 0) {
-                        currentTxt = dropdowns[i].GetComponent<Dropdown>().options[dropdowns[i].GetComponent<Dropdown>().value].text;
+                        currentTxt.Add(dropdowns[i].GetComponent<Dropdown>().options[dropdowns[i].GetComponent<Dropdown>().value].text);
                     } else {
                         continue;
                     }
-                    value += "<color=#00ff00>" + currentTxt + "　　　</color>";
+                    //value += "<color=#00ff00>" + currentTxt + "　　　</color>";
                 }
-                this.GetComponent<TextManager>().result.text = value;
+                //this.GetComponent<TextManager>().result.text = value;
+                try {
+                    this.GetComponent<MotionTextSync>().currentTexts = currentTxt;
+                    this.GetComponent<MotionTextSync>().SetText();
+                } catch { }
             }
             if (post.ContainsKey("text_search")) {
                 Debug.Log(www.text);

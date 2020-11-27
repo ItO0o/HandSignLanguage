@@ -17,10 +17,12 @@ public class SelectMotion : MonoBehaviour
     [SerializeField]
     AnimationManager anime;
 
+    MotionData.Motion defaultMotion;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        StartCoroutine(SetDefault());
     }
 
     // Update is called once per frame
@@ -28,12 +30,22 @@ public class SelectMotion : MonoBehaviour
     {
         
     }
+    public IEnumerator SetDefault() {
+       yield return StartCoroutine(this.GetComponent<MysqlClient>().SearchPhrase("Default"));
+       defaultMotion = this.GetComponent<MotionData>().currentMotion;
+       //Debug.Log(defaultMotion.Poses.Count);
+    }
 
     public void LoadAnimation()
     {
+        StartCoroutine(GetAnimation());
+    }
+
+    public IEnumerator GetAnimation() {
         motion.currentMotion.Poses = new List<MotionData.Pose>();
         string temp = label.GetComponent<Text>().text.Split('_')[0];
-        mysql.DummyStartCoroutine("GetAnimation", int.Parse(temp));
+        yield return StartCoroutine(this.GetComponent<MysqlClient>().GetAnimation(int.Parse(temp)));
+        motion.currentMotion.Poses.Insert(0, defaultMotion.Poses[0]);
     }
 
     public void StartMotion()

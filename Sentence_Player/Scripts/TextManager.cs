@@ -24,16 +24,22 @@ public class TextManager : MonoBehaviour
     public Text result;
     [SerializeField]
     public GameObject confirmButton;
+    MotionData.Motion defaultMotion;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        StartCoroutine(SetDefault());
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public IEnumerator SetDefault() {
+        yield return StartCoroutine(this.GetComponent<MysqlClient>().SearchPhrase("Default"));
+        defaultMotion = this.GetComponent<MotionData>().currentMotion;
     }
 
     public void ClearMotion()
@@ -75,9 +81,13 @@ public class TextManager : MonoBehaviour
 
     public void SearchText()
     {
+        StartCoroutine(GetText());
+    }
+    public IEnumerator GetText() {
         ClearMotion();
+        this.GetComponent<MotionData>().loadedMotionSentenceCnt = new List<int>();
         string str = "";
-        for (int i = 0;i < manager.GetComponent<MysqlClient>().dropdowns.Count; i++) {
+        for (int i = 0; i < manager.GetComponent<MysqlClient>().dropdowns.Count; i++) {
             Dropdown temp = manager.GetComponent<MysqlClient>().dropdowns[i].GetComponent<Dropdown>();
             if (temp.options.Count == 0) {
                 continue;
@@ -88,6 +98,8 @@ public class TextManager : MonoBehaviour
             }
             str += ",";
         }
-        StartCoroutine(manager.GetComponent<MysqlClient>().SearchPhrase(str));
+        yield return StartCoroutine(manager.GetComponent<MysqlClient>().SearchPhrase(str));
+        motion.currentMotion.Poses.Insert(0, defaultMotion.Poses[0]);
+        motion.currentMotion.Poses.Add(defaultMotion.Poses[0]);
     }
 }

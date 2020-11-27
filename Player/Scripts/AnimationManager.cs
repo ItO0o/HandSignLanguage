@@ -126,4 +126,8 @@ public class AnimationManager : MonoBehaviour
         handler = new HumanPoseHandler(animator.avatar, animator.transform);
         handler.GetHumanPose(ref humanPose);
     }
+
+    //public void SetDefaultPose() {
+    //    StartCoroutine(this.GetComponent<MysqlClient>().SearchPhrase("Default"));
+    //}
 }

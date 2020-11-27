@@ -29,7 +29,7 @@ public class MotionData : MonoBehaviour
         loadedMotionSentenceCnt = new List<int>();
         if (network == true)
         {
-            mysql.DummyStartCoroutine("GetAnimation", 1);
+            //mysql.DummyStartCoroutine("GetAnimation", 1);
             currentMotion.Poses = new List<Pose>();
         }
     }
