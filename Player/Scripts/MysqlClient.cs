@@ -8,8 +8,9 @@ public class MysqlClient : MonoBehaviour
 {
     //string serverAddress = "http://172.16.5.193/handsignlanguage_mysql_server.php";
     //string serverAddress = "http://set1.ie.aitech.ac.jp:18888/handsignlanguage_mysql_server.php";
-    public static string serverAddress = "http://10.4.141.113:80/handsignlanguage_mysql_server.php";
-    //public static string serverAddress = "http://sawanolab.aitech.ac.jp/HandSignLanguage_Mysql_Server/handsignlanguage_mysql_server.php";
+    //public static string serverAddress = "http://192.168.1.15:80/handsignlanguage_mysql_server.php";
+    //public static string serverAddress = "http://10.4.141.113:80/handsignlanguage_mysql_server.php";
+    public static string serverAddress = "http://sawanolab.aitech.ac.jp/HandSignLanguage_Mysql_Server/handsignlanguage_mysql_server.php";
     public static int id;
     public static string motionName;
     public bool inRequestAnimation;
@@ -253,8 +254,8 @@ public class MysqlClient : MonoBehaviour
                     }
                     dropdowns.Add(tempObj);
                     tempObj.transform.parent = dropdwonsParent.transform;
-                    tempObj.GetComponent<RectTransform>().position = new Vector3(100,680 -　50 * i, 0);
-                    confirmButton.GetComponent<RectTransform>().position = new Vector3(100, 680 - 50 * (i + 1), 0);
+                    tempObj.GetComponent<RectTransform>().position = new Vector3(120,650 - 67 * i, 0);
+                    confirmButton.GetComponent<RectTransform>().position = new Vector3(120, 670 - 67 * (i + 1), 0);
                     for (int j = 0; j < cand.Length; j++) {
                         string str = cand[j];
                         if (str.Equals("-1")) {

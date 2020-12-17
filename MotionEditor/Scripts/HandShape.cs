@@ -195,7 +195,7 @@ public class HandShape : MonoBehaviour
     }
     //掌をカメラ反対に、指を上に
     public void LeftHand7() {
-        currentRightHand = new Quaternion(0.5f, -0.4f, -0.6f, 0.5f);
+        currentLeftHand = new Quaternion(0.5f, -0.4f, -0.6f, 0.5f);
     }
 
     public void LeftFinger1() {
