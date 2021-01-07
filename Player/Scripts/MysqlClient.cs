@@ -214,28 +214,30 @@ public class MysqlClient : MonoBehaviour
             }
             if (post.ContainsKey("phrase_search"))
             {
-                Debug.Log(www.text);
-                string[] temp = www.text.Split(',');
-                //string[] temp = {"4","6"};
-                string value = "";
-                for (int i = 0; i < temp.Length; i++) {
-                    int id = int.Parse(temp[i]);
-                    yield return StartCoroutine("GetAnimation", id);
-                }
-                List<string> currentTxt = new List<string>();
-                for (int i = 0; i < dropdowns.Count; i++) { 
-                    if (dropdowns[i].GetComponent<Dropdown>().options.Count > 0) {
-                        currentTxt.Add(dropdowns[i].GetComponent<Dropdown>().options[dropdowns[i].GetComponent<Dropdown>().value].text);
-                    } else {
-                        continue;
+                if (www.text.Length > 0) {
+                    Debug.Log(www.text);
+                    string[] temp = www.text.Split(',');
+                    //string[] temp = {"4","6"};
+                    string value = "";
+                    for (int i = 0; i < temp.Length; i++) {
+                        int id = int.Parse(temp[i]);
+                        yield return StartCoroutine("GetAnimation", id);
                     }
-                    //value += "<color=#00ff00>" + currentTxt + "　　　</color>";
+                    List<string> currentTxt = new List<string>();
+                    for (int i = 0; i < dropdowns.Count; i++) {
+                        if (dropdowns[i].GetComponent<Dropdown>().options.Count > 0) {
+                            currentTxt.Add(dropdowns[i].GetComponent<Dropdown>().options[dropdowns[i].GetComponent<Dropdown>().value].text);
+                        } else {
+                            continue;
+                        }
+                        //value += "<color=#00ff00>" + currentTxt + "　　　</color>";
+                    }
+                    //this.GetComponent<TextManager>().result.text = value;
+                    try {
+                        this.GetComponent<MotionTextSync>().currentTexts = currentTxt;
+                        this.GetComponent<MotionTextSync>().SetText();
+                    } catch { }
                 }
-                //this.GetComponent<TextManager>().result.text = value;
-                try {
-                    this.GetComponent<MotionTextSync>().currentTexts = currentTxt;
-                    this.GetComponent<MotionTextSync>().SetText();
-                } catch { }
             }
             if (post.ContainsKey("text_search")) {
                 Debug.Log(www.text);

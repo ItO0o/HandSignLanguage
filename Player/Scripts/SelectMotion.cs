@@ -38,6 +38,7 @@ public class SelectMotion : MonoBehaviour
 
     public void LoadAnimation()
     {
+        this.GetComponent<Paformance>().counter_flag = true;
         StartCoroutine(GetAnimation());
     }
 
@@ -47,6 +48,9 @@ public class SelectMotion : MonoBehaviour
         yield return StartCoroutine(this.GetComponent<MysqlClient>().GetAnimation(int.Parse(temp)));
         motion.currentMotion.Poses.Insert(0, defaultMotion.Poses[0]);
         motion.currentMotion.Poses.Add(defaultMotion.Poses[0]);
+        this.GetComponent<Paformance>().counter_flag = false;
+        Debug.Log(this.GetComponent<Paformance>().elapsedTime);
+        this.GetComponent<Paformance>().elapsedTime = 0;
     }
 
     public void StartMotion()
